@@ -2,17 +2,16 @@
 	"name": "task_tracker_cli",
 	"version": "1.0.0",
 	"description": "ts beginner project",
-	"type": "module",
 	"main": "index.js",
 	"scripts": {
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"dev": "tsx app/main.ts"
 	},
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node"
-  },
+	"jest": {
+		"preset": "ts-jest",
+		"testEnvironment": "node"
+	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/EthanRule/task_tracker_cli.git"

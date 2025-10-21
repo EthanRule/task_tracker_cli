@@ -1,6 +1,7 @@
 import { TaskTracker } from "./TaskTracker/task_tracker";
 import { parseInput } from "./helpers/parse_input";
 import { initializeJSON } from "./helpers/initialize_json";
+import { isdigit } from "./helpers/isdigit";
 
 function input(): void {
 	process.stdout.write("task-cli ");
@@ -11,7 +12,7 @@ function input(): void {
 				taskTracker.addTask(argv[1]);
 				break;
 			case "update":
-				if (isdigit(argv[1])) {
+				if (isdigit(argv[1]) && argc === 3) {
 					taskTracker.updateTask(Number(argv[1]), argv[2]);
 				}
 				break;
@@ -24,13 +25,16 @@ function input(): void {
 			case "list":
 				switch (argv[1]) {
 					case "done":
+						taskTracker.listDoneTasks();
 						break;
 					case "todo":
+						taskTracker.listNotDoneTasks();
 						break;
 					case "in-progress":
+						taskTracker.listInProgressTasks;
 						break;
 					default:
-						console.log("Invalid input. For a list of commands use the command: help");
+						taskTracker.listTasks();
 				}
 				break;
 			case "quit":

@@ -14,13 +14,16 @@ interface Task {
 }
 
 export class TaskTracker {
-	private tasks: Task[];
+	private tasks: Map<number, Task> = new Map();
 
 	constructor() {
 		if (fs.existsSync("app/database/db.json") && fs.readFileSync("app/database/db.json", "utf-8")) {
-			this.tasks = JSON.parse(fs.readFileSync("app/database/db.json", "utf-8"));
+			const data = JSON.parse(fs.readFileSync("app/database/db.json", "utf-8"));
+			data.forEach((task) => {
+				this.tasks.set(task.id, task);
+			});
 		} else {
-			this.tasks = [];
+			this.tasks = new Map();
 		}
 	}
 
@@ -32,31 +35,79 @@ export class TaskTracker {
 			createdAt: Date(),
 			updatedAt: Date(),
 		};
-		this.tasks.push(task);
+		this.tasks.set(task.id, task);
 		console.log(`Task added successfully (ID: ${task.id})`);
 	}
 
 	updateTask(taskId: number, newTask: string): void {
-		//TODO: args?
+		const task = this.tasks.get(taskId);
+		if (task) {
+			task.description = newTask;
+			task.updatedAt = Date();
+		}
 	}
 
-	deleteTask(): void {}
+	deleteTask(taskId: number): void {
+		this.tasks.delete(taskId);
+	}
 
-	updateProgress(): void {}
+	updateProgress(taskId: number): void {
+		const task = this.tasks.get(taskId);
+		if (task) {
+			switch (task.status) {
+				case Progress.todo:
+					task.status = Progress.inProgress;
+					break;
+				case Progress.inProgress:
+					task.status = Progress.done;
+					break;
+				default:
+					task.status = Progress.done;
+			}
+			task.updatedAt = Date();
+		}
+	}
 
-	listTasks(): void {}
+	listTasks(): void {
+		console.log("Tasks\nid, status, desc");
+		for (const task of this.tasks.values()) {
+			console.log(task.id, task.status, task.description);
+		}
+	}
 
-	listDoneTasks(): void {}
+	listDoneTasks(): void {
+		console.log("Done Tasks\nid, desc, updatedAt");
+		for (const task of this.tasks.values()) {
+			if (task.status === Progress.done) {
+				console.log(task.id, task.description, task.updatedAt);
+			}
+		}
+	}
 
-	listNotDoneTasks(): void {}
+	listNotDoneTasks(): void {
+		console.log("Not Done Tasks\nid, status, desc, updatedAt");
+		for (const task of this.tasks.values()) {
+			if (task.status !== Progress.done) {
+				console.log(task.id, task.status, task.description, task.updatedAt);
+			}
+		}
+	}
 
-	listTasksInProgress(): void {}
+	listInProgressTasks(): void {
+		console.log("In-Progress Tasks\nid, desc, updatedAt");
+		for (const task of this.tasks.values()) {
+			if (task.status === Progress.inProgress) {
+				console.log(task.id, task.description, task.updatedAt);
+			}
+		}
+	}
 
 	private generateUniqueId(): number {
-		if (this.tasks.length == 0) {
-			return 0;
+		let maxId = 0;
+		for (const task of this.tasks.values()) {
+			maxId = Math.max(maxId, task.id);
 		}
-		return this.tasks[this.tasks.length - 1].id + 1;
+		return maxId + 1;
 	}
 
 	private saveTasks(): void {}
