@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import { initializeJSON } from "../helpers/initialize_json";
-enum Progress {
+export enum Progress {
 	todo = "todo",
 	inProgress = "in-progress",
 	done = "done",
@@ -124,5 +124,9 @@ export class TaskTracker {
 	// Functions only used in testing:
 	getTasks(): Map<number, Task> {
 		return this.tasks;
+	}
+
+	clearTasks(): void {
+		this.tasks.clear();
 	}
 }
