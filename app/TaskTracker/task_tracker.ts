@@ -1,4 +1,5 @@
 import * as fs from "fs";
+import { initializeJSON } from "../helpers/initialize_json";
 enum Progress {
 	todo = "todo",
 	inProgress = "in-progress",
@@ -15,11 +16,16 @@ interface Task {
 
 export class TaskTracker {
 	private tasks: Map<number, Task> = new Map();
+	private file: string;
 
-	constructor() {
-		if (fs.existsSync("app/database/db.json") && fs.readFileSync("app/database/db.json", "utf-8")) {
-			const data = JSON.parse(fs.readFileSync("app/database/db.json", "utf-8"));
-			data.forEach((task) => {
+	constructor(file: string) {
+		this.file = file;
+
+		initializeJSON(this.file);
+
+		if (fs.existsSync(this.file) && fs.readFileSync(this.file, "utf-8")) {
+			const data = JSON.parse(fs.readFileSync(this.file, "utf-8"));
+			data.forEach((task: Task) => {
 				this.tasks.set(task.id, task);
 			});
 		} else {
@@ -102,6 +108,11 @@ export class TaskTracker {
 		}
 	}
 
+	saveTasks(): void {
+		const tasksArray = Array.from(this.tasks.values());
+		fs.writeFileSync(this.file, JSON.stringify(tasksArray, null, 4));
+	}
+
 	private generateUniqueId(): number {
 		let maxId = 0;
 		for (const task of this.tasks.values()) {
@@ -110,5 +121,8 @@ export class TaskTracker {
 		return maxId + 1;
 	}
 
-	private saveTasks(): void {}
+	// Functions only used in testing:
+	getTasks(): Map<number, Task> {
+		return this.tasks;
+	}
 }

@@ -1,6 +1,5 @@
 import { TaskTracker } from "./TaskTracker/task_tracker";
 import { parseInput } from "./helpers/parse_input";
-import { initializeJSON } from "./helpers/initialize_json";
 import { isdigit } from "./helpers/isdigit";
 
 function input(): void {
@@ -17,10 +16,19 @@ function input(): void {
 				}
 				break;
 			case "delete":
+				if (isdigit(argv[1]) && argc === 2) {
+					taskTracker.deleteTask(Number(argv[1]));
+				}
 				break;
 			case "mark-in-progress":
+				if (isdigit(argv[1]) && argc === 2) {
+					taskTracker.updateProgress(Number(argv[1]));
+				}
 				break;
 			case "mark-done":
+				if (isdigit(argv[1]) && argc === 2) {
+					taskTracker.updateProgress(Number(argv[1]));
+				}
 				break;
 			case "list":
 				switch (argv[1]) {
@@ -38,8 +46,10 @@ function input(): void {
 				}
 				break;
 			case "quit":
+				taskTracker.saveTasks();
 				process.exit();
 			case "exit":
+				taskTracker.saveTasks();
 				process.exit();
 			default:
 				console.log("Invalid input. For a list of commands use the command: help");
@@ -49,9 +59,9 @@ function input(): void {
 	});
 }
 
-let taskTracker = new TaskTracker();
+let databasePath: string = "app/database/db.json";
+let taskTracker = new TaskTracker(databasePath);
 function main(): void {
-	initializeJSON();
 	input();
 }
 
