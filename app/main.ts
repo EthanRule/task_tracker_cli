@@ -28,6 +28,7 @@ function input(): void {
 			case "mark-done":
 				if (isdigit(argv[1]) && argc === 2) {
 					taskTracker.updateProgress(Number(argv[1]));
+					taskTracker.updateProgress(Number(argv[1]));
 				}
 				break;
 			case "list":

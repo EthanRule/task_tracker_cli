@@ -57,6 +57,8 @@ export class TaskTracker {
 		this.tasks.delete(taskId);
 	}
 
+	// TODO: This is slightly bugged, when a task is done, and a user says make it in-progress
+	// The task should decrement progress.
 	updateProgress(taskId: number): void {
 		const task = this.tasks.get(taskId);
 		if (task) {
@@ -74,7 +76,9 @@ export class TaskTracker {
 		}
 	}
 
-	listTasks(): void {
+	// Note: These list functions idealy would be on the front end instead. But to keep the logic more,
+	// readible I decided to keep this logic in the backend. These functions are not and will not be tested.
+	listTasks() {
 		console.log("Tasks\nid, status, desc");
 		for (const task of this.tasks.values()) {
 			console.log(task.id, task.status, task.description);
@@ -108,6 +112,16 @@ export class TaskTracker {
 		}
 	}
 
+	// Used just for testing
+	getTasks(): Map<number, Task> {
+		return this.tasks;
+	}
+
+	// Used just for testing
+	clearTasks(): void {
+		this.tasks.clear();
+	}
+
 	saveTasks(): void {
 		const tasksArray = Array.from(this.tasks.values());
 		fs.writeFileSync(this.file, JSON.stringify(tasksArray, null, 4));
@@ -119,14 +133,5 @@ export class TaskTracker {
 			maxId = Math.max(maxId, task.id);
 		}
 		return maxId + 1;
-	}
-
-	// Functions only used in testing:
-	getTasks(): Map<number, Task> {
-		return this.tasks;
-	}
-
-	clearTasks(): void {
-		this.tasks.clear();
 	}
 }

@@ -1,16 +1,9 @@
 [
-	{
-		"id": 1,
-		"description": "task",
-		"status": "todo",
-		"createdAt": "Tue Oct 21 2025 18:13:17 GMT-0700 (Pacific Daylight Time)",
-		"updatedAt": "Tue Oct 21 2025 18:13:17 GMT-0700 (Pacific Daylight Time)"
-	},
-	{
-		"id": 2,
-		"description": "secondtask",
-		"status": "todo",
-		"createdAt": "Tue Oct 21 2025 18:13:19 GMT-0700 (Pacific Daylight Time)",
-		"updatedAt": "Tue Oct 21 2025 18:13:19 GMT-0700 (Pacific Daylight Time)"
-	}
+    {
+        "id": 2,
+        "description": "secondtask",
+        "status": "todo",
+        "createdAt": "Tue Oct 21 2025 18:13:19 GMT-0700 (Pacific Daylight Time)",
+        "updatedAt": "Tue Oct 21 2025 18:13:19 GMT-0700 (Pacific Daylight Time)"
+    }
 ]

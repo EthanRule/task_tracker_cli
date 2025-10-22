@@ -95,9 +95,5 @@ test("Updating task that is already done", () => {
 	expect(taskTracker.getTasks().get(1)?.status).toBe(Progress.done);
 });
 
-// Function listTasks tests:
-
-// Function listDoneTasks tests:
-// Function listNotDoneTasks tests:
-// Function listInProgressTasks tests:
 // Function saveTasks tests:
+test("Saving tasks are retreivable")
